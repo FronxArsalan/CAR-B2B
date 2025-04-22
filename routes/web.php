@@ -44,4 +44,7 @@ Route::middleware('authenticate')->group(function () {
 
     // lang change
     Route::get('change', [LangugeController::class, 'change'])->name('lang.change');
+
+    Route::get('tire/import', [TireController::class, 'showImportForm'])->name('tires.import.form');
+    Route::post('tire/import', [TireController::class, 'import'])->name('tires.import');
 });

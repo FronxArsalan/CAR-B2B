@@ -47,13 +47,14 @@ class Tire extends Model
     // Accessor (Optional) - Formatted Sale Price
     public function getFormattedSalePriceAttribute()
     {
-        return number_format($this->sale_price, 2) . ' €';
+        return number_format($this->prix, 2) . ' €';
     }
+
 
     // Scope (Optional) - Search by Mark
     public function scopeSearch($query, $term)
     {
-        return $query->where('mark', 'like', '%' . $term . '%')
-            ->orWhere('tire_size', 'like', '%' . $term . '%');
+        return $query->where('marque', 'like', '%' . $term . '%')
+            ->orWhereRaw("CONCAT(largeur, '/', hauteur, 'R', diametre) LIKE ?", ["%{$term}%"]);
     }
 }
