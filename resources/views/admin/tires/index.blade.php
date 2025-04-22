@@ -44,6 +44,7 @@
                                                 <th>Article #</th>
                                                 <th>Brand</th>
                                                 <th>Profile</th>
+                                                <th>Type</th>
                                                 <th>Tire Size</th>
                                                 <th>Speed</th>
                                                 <th>Season</th>
@@ -62,7 +63,9 @@
                                                     <td>{{ $tire->nr_article }}</td>
                                                     <td>{{ $tire->marque }}</td>
                                                     <td>{{ $tire->profile }}</td>
-                                                    <td>{{ $tire->largeur }}/{{ $tire->hauteur }}R{{ $tire->diametre }}</td>
+                                                    <td>{{ $tire->type ?? '-' }}</td>
+                                                    <td>{{ $tire->largeur }}/{{ $tire->hauteur }}R{{ $tire->diametre }}
+                                                    </td>
                                                     <td>{{ $tire->vitesse }}</td>
                                                     <td>{{ ucfirst($tire->saison) }}</td>
                                                     <td>{{ $tire->dot ?? '-' }}</td>

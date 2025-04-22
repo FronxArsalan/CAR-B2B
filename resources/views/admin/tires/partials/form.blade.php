@@ -57,6 +57,15 @@
             @endif
         </div>
     </div>
+    <div class="mb-3">
+        <label for="type">Tire Type</label>
+        <select name="type" id="type" class="form-control">
+            <option value="">Select Type</option>
+            <option value="radial" {{ old('type', $tire->type ?? '') == 'radial' ? 'selected' : '' }}>Radial</option>
+            <option value="bias" {{ old('type', $tire->type ?? '') == 'bias' ? 'selected' : '' }}>Bias</option>
+        </select>
+    </div>
+    
 
     {{-- Speed Rating --}}
     <div class="col-md-6">
@@ -166,7 +175,14 @@
                 <span class="text-danger">{{ $errors->first('quantite') }}</span>
             @endif
         </div>
+        <div class="mb-3">
+            <label for="low_stock_threshold">Low Stock Threshold</label>
+            <input type="number" name="low_stock_threshold" class="form-control"
+                   value="{{ old('low_stock_threshold', $tire->low_stock_threshold ?? 5) }}" min="0">
+        </div>
+        
     </div>
+    
 
     {{-- Professional Price --}}
     <div class="col-md-6">
@@ -221,10 +237,59 @@
             <small class="text-muted">Format: Width/HeightRDiameter (e.g., 205/55R16)</small>
         </div>
     </div>
+    
+    <hr>
+    <h5 class="mt-4">Discounts</h5>
+    
+    <div id="discount-container">
+        @if(isset($tire) && $tire->discounts)
+            @foreach($tire->discounts as $index => $discount)
+                <div class="row border p-2 mb-2 discount-row">
+                    <div class="col-md-3">
+                        <label>Min Quantity</label>
+                        <input type="number" name="discounts[{{ $index }}][min_quantity]" class="form-control"
+                            value="{{ old("discounts.$index.min_quantity", $discount->min_quantity) }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Discount %</label>
+                        <input type="number" step="0.01" name="discounts[{{ $index }}][discount_percent]" class="form-control"
+                            value="{{ old("discounts.$index.discount_percent", $discount->discount_percent) }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Type</label>
+                        <select name="discounts[{{ $index }}][type]" class="form-control">
+                            <option value="general" {{ $discount->type == 'general' ? 'selected' : '' }}>General</option>
+                            <option value="seasonal" {{ $discount->type == 'seasonal' ? 'selected' : '' }}>Seasonal</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Season (if seasonal)</label>
+                        <input type="text" name="discounts[{{ $index }}][season]" class="form-control"
+                            value="{{ old("discounts.$index.season", $discount->season) }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Start Date</label>
+                        <input type="date" name="discounts[{{ $index }}][start_date]" class="form-control"
+                            value="{{ old("discounts.$index.start_date", $discount->start_date?->toDateString()) }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label>End Date</label>
+                        <input type="date" name="discounts[{{ $index }}][end_date]" class="form-control"
+                            value="{{ old("discounts.$index.end_date", $discount->end_date?->toDateString()) }}">
+                    </div>
+                </div>
+            @endforeach
+        @endif
+    </div>
+    
+    <button type="button" id="add-discount" class="btn btn-outline-primary btn-sm">+ Add Discount</button>
+    
 
     @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+             console.log('aaaaaaaaaaaaaaaaaa');
+             
                 // Get all relevant elements
                 const widthInput = document.querySelector('[name="largeur"]');
                 const heightInput = document.querySelector('[name="hauteur"]');
@@ -276,6 +341,13 @@
 
                 // Initialize on load
                 updateTireSize();
+            });
+        </script>
+    @endpush
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+               console.log('a');
             });
         </script>
     @endpush

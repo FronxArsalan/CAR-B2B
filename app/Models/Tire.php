@@ -10,17 +10,20 @@ class Tire extends Model
     use Notifiable;
     //
     protected $table = 'tires';
+    protected $with = ['discounts'];
 
     protected $fillable = [
         'nr_article',
         'largeur',
         'hauteur',
         'diametre',
+        'type',
         'vitesse',
         'marque',
         'profile',
         'saison',
         'quantite',
+        'low_stock_threshold',
         'prix_pro',
         'prix',
         'etat',
@@ -57,4 +60,32 @@ class Tire extends Model
         return $query->where('marque', 'like', '%' . $term . '%')
             ->orWhereRaw("CONCAT(largeur, '/', hauteur, 'R', diametre) LIKE ?", ["%{$term}%"]);
     }
+    public function getDiscountedPrice($qty = 1)
+    {
+        $discount = $this->discounts()
+            ->where('min_quantity', '<=', $qty)
+            ->where(function ($q) {
+                $today = now();
+                $q->whereNull('start_date')
+                    ->orWhere('start_date', '<=', $today);
+            })
+            ->where(function ($q) {
+                $today = now();
+                $q->whereNull('end_date')
+                    ->orWhere('end_date', '>=', $today);
+            })
+            ->orderByDesc('discount_percent')
+            ->first();
+
+        if ($discount) {
+            return round($this->prix - ($this->prix * $discount->discount_percent / 100), 2);
+        }
+
+        return $this->prix;
+    }
+    public function discounts()
+{
+    return $this->hasMany(Discount::class);
+}
+
 }

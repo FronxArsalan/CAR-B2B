@@ -34,6 +34,7 @@ class TiresImport implements ToModel, WithHeadingRow
             'largeur' => $cleanRow['largeur'] ?? null,
             'hauteur' => $cleanRow['hauteur'] ?? null,
             'diametre' => $cleanRow['diametre'] ?? null,
+            'type' => $cleanRow['type'] ?? null,
             'vitesse' => $cleanRow['vitesse'] ?? null,
             'marque' => $cleanRow['marque'] ?? null,
             'profile' => $cleanRow['profile'] ?? null,

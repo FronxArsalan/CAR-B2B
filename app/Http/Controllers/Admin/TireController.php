@@ -55,7 +55,23 @@ class TireController extends Controller
             'rft' => 'nullable|boolean'
         ]);
 
-        Tire::create($validated);
+        $tire = Tire::create($validated);
+        if ($request->has('discounts')) {
+            $tire->discounts()->delete(); // remove old ones
+        
+            foreach ($request->discounts as $data) {
+                if (!empty($data['min_quantity']) && !empty($data['discount_percent'])) {
+                    $tire->discounts()->create([
+                        'min_quantity' => $data['min_quantity'],
+                        'discount_percent' => $data['discount_percent'],
+                        'type' => $data['type'] ?? 'general',
+                        'season' => $data['season'] ?? null,
+                        'start_date' => $data['start_date'] ?? null,
+                        'end_date' => $data['end_date'] ?? null,
+                    ]);
+                }
+            }
+        }
 
         return redirect()
             ->route('tires.index')
@@ -97,6 +113,22 @@ class TireController extends Controller
         ]);
 
         $tire->update($validated);
+        if ($request->has('discounts')) {
+            $tire->discounts()->delete(); // remove old ones
+        
+            foreach ($request->discounts as $data) {
+                if (!empty($data['min_quantity']) && !empty($data['discount_percent'])) {
+                    $tire->discounts()->create([
+                        'min_quantity' => $data['min_quantity'],
+                        'discount_percent' => $data['discount_percent'],
+                        'type' => $data['type'] ?? 'general',
+                        'season' => $data['season'] ?? null,
+                        'start_date' => $data['start_date'] ?? null,
+                        'end_date' => $data['end_date'] ?? null,
+                    ]);
+                }
+            }
+        }
 
         return redirect()
             ->route('tires.index')
@@ -150,4 +182,23 @@ class TireController extends Controller
         Excel::import(new TiresImport, $request->file('file'));
         return redirect()->route('tires.index')->with('success', 'Products imported successfully!');
     }
+
+    // search
+    public function search(Request $request)
+{
+    $query = Tire::query();
+
+    if ($request->filled('tire_size')) {
+        $query->where('tire_size', 'like', '%' . $request->tire_size . '%');
+    }
+
+    if ($request->filled('mark')) {
+        $query->where('mark', 'like', '%' . $request->mark . '%');
+    }
+
+    $tires = $query->get();
+
+    return view('admin.tires.search', compact('tires'));
+}
+
 }

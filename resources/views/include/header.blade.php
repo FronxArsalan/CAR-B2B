@@ -84,6 +84,16 @@
                         <i class="ri-menu-2-fill"></i>
                     </button>
 
+                    <div>
+                        
+                        <a href="{{ route('cart.index') }}">
+                            <span class="badge bg-info p-1">
+                                <i class="ri-shopping-cart-line fs-16"></i>
+                                <span id="cart-count" class="fs-14 ms-1"></span>
+                            </span>
+                        </a>
+                    </div>
+
                     <!-- Horizontal Menu Toggle Button -->
                     <button class="navbar-toggle" data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
                         <div class="lines">
@@ -93,75 +103,8 @@
                         </div>
                     </button>
 
-                    <!-- Topbar Search Form -->
-                    <div class="app-search dropdown d-none d-lg-block">
-                        <form>
-                            <div class="input-group">
-                                <input type="search" class="form-control dropdown-toggle" placeholder="Search..."
-                                    id="top-search">
-                                <span class="ri-search-line search-icon"></span>
-                            </div>
-                        </form>
-
-                        <div class="dropdown-menu dropdown-menu-animated dropdown-lg" id="search-dropdown">
-                            <!-- item-->
-                            <div class="dropdown-header noti-title">
-                                <h5 class="text-overflow mb-1">Found <b class="text-decoration-underline">08</b> results
-                                </h5>
-                            </div>
-
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                <i class="ri-file-chart-line fs-16 me-1"></i>
-                                <span>Analytics Report</span>
-                            </a>
-
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                <i class="ri-lifebuoy-line fs-16 me-1"></i>
-                                <span>How can I help you?</span>
-                            </a>
-
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                <i class="ri-user-settings-line fs-16 me-1"></i>
-                                <span>User profile settings</span>
-                            </a>
-
-                            <!-- item-->
-                            <div class="dropdown-header noti-title">
-                                <h6 class="text-overflow mt-2 mb-1 text-uppercase">Users</h6>
-                            </div>
-
-                            <div class="notification-list">
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <div class="d-flex">
-                                        <img class="d-flex me-2 rounded-circle"
-                                            src="{{ asset('assets/images/users/avatar-2.jpg') }}"
-                                            alt="Generic placeholder image" height="32">
-                                        <div class="w-100">
-                                            <h5 class="m-0 fs-14">Erwin Brown</h5>
-                                            <span class="fs-12 mb-0">UI Designer</span>
-                                        </div>
-                                    </div>
-                                </a>
-
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <div class="d-flex">
-                                        <img class="d-flex me-2 rounded-circle"
-                                            src="{{ asset('assets/images/users/avatar-5.jpg') }}"
-                                            alt="Generic placeholder image" height="32">
-                                        <div class="w-100">
-                                            <h5 class="m-0 fs-14">Jacob Deo</h5>
-                                            <span class="fs-12 mb-0">Developer</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                   
+                  
                 </div>
 
                 <ul class="topbar-menu d-flex align-items-center gap-3">
@@ -204,7 +147,7 @@
                         </div>
                     </li>
 
-                    <li class="dropdown notification-list">
+                    {{-- <li class="dropdown notification-list">
                         <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#"
                             role="button" aria-haspopup="false" aria-expanded="false">
                             <i class="ri-notification-3-fill fs-22"></i>
@@ -349,9 +292,9 @@
                             </a>
 
                         </div>
-                    </li>
+                    </li> --}}
 
-                    <li class="dropdown d-none d-sm-inline-block">
+                    {{-- <li class="dropdown d-none d-sm-inline-block">
                         <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#"
                             role="button" aria-haspopup="false" aria-expanded="false">
                             <i class="ri-apps-2-fill fs-22"></i>
@@ -407,15 +350,15 @@
                             </div>
 
                         </div>
-                    </li>
+                    </li> --}}
 
-                    <li class="d-none d-sm-inline-block">
+                    {{-- <li class="d-none d-sm-inline-block">
                         <a class="nav-link" data-bs-toggle="offcanvas" href="#theme-settings-offcanvas">
                             <i class="ri-settings-3-fill fs-22"></i>
                         </a>
-                    </li>
+                    </li> --}}
 
-                    <li class="d-none d-sm-inline-block">
+                    {{-- <li class="d-none d-sm-inline-block">
                         <div class="nav-link" id="light-dark-mode">
                             <i class="ri-moon-fill fs-22"></i>
                         </div>
@@ -426,7 +369,7 @@
                         <a class="nav-link" href="" data-toggle="fullscreen">
                             <i class="ri-fullscreen-line fs-22"></i>
                         </a>
-                    </li>
+                    </li> --}}
 
                     <li class="dropdown me-md-2">
                         <a class="nav-link dropdown-toggle arrow-none nav-user px-2" data-bs-toggle="dropdown"

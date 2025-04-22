@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Controllers\Admin\LangugeController;
-use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\Auth\AuthController;
-
 use App\Http\Controllers\Admin\TireController;
+
+use App\Http\Controllers\Admin\UserController;
+
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\LangugeController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Customer\CartController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -47,4 +48,13 @@ Route::middleware('authenticate')->group(function () {
 
     Route::get('tire/import', [TireController::class, 'showImportForm'])->name('tires.import.form');
     Route::post('tire/import', [TireController::class, 'import'])->name('tires.import');
+});
+Route::prefix('cart')->name('cart.')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('index');
+    Route::post('/add/{tire}', [CartController::class, 'add'])->name('add');
+    Route::post('/update/{tire}', [CartController::class, 'update'])->name('update');
+    Route::post('/remove/{tire}', [CartController::class, 'remove'])->name('remove');
+    Route::post('/clear', [CartController::class, 'clear'])->name('clear');
+    // cart count
+    Route::get('/count', [CartController::class, 'count'])->name('count');
 });

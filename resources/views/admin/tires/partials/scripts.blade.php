@@ -72,3 +72,42 @@
         updateTireSize();
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('add-discount').addEventListener('click', function() {
+            let index = document.querySelectorAll('.discount-row').length;
+            let html = `
+        <div class="row border p-2 mb-2 discount-row">
+            <div class="col-md-3">
+                <label>Min Quantity</label>
+                <input type="number" name="discounts[${index}][min_quantity]" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <label>Discount %</label>
+                <input type="number" step="0.01" name="discounts[${index}][discount_percent]" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <label>Type</label>
+                <select name="discounts[${index}][type]" class="form-control">
+                    <option value="general">General</option>
+                    <option value="seasonal">Seasonal</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label>Season (optional)</label>
+                <input type="text" name="discounts[${index}][season]" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <label>Start Date</label>
+                <input type="date" name="discounts[${index}][start_date]" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <label>End Date</label>
+                <input type="date" name="discounts[${index}][end_date]" class="form-control">
+            </div>
+        </div>`;
+            document.getElementById('discount-container').insertAdjacentHTML('beforeend', html);
+        });
+
+    });
+</script>
