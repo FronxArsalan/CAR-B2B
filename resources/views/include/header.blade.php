@@ -520,6 +520,13 @@
                             <span> Inventory </span>
                         </a>
                     </li>
+                    <li class="side-nav-item">
+                        <a href="{{ route('admin.orders.index') }}" class="side-nav-link">
+                            <i class="ri-file-list-3-fill"></i>
+                            <!-- <span class="badge bg-success float-end">9+</span> -->
+                            <span> Orders </span>
+                        </a>
+                    </li>
                     {{-- // Add to your sidebar/navigation: --}}
                     {{-- <li class="nav-item">
                         <a class="nav-link" href="{{ route('tires.inventory') }}">

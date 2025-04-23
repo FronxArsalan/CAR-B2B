@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\TireController;
 use App\Http\Controllers\Admin\UserController;
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\LangugeController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Customer\CartController;
@@ -64,6 +65,13 @@ Route::prefix('cart')->name('cart.')->group(function () {
 // checkout place order
 Route::get('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 Route::post('/place-order', [CartController::class, 'placeOrder'])->name('cart.placeOrder');
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::post('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.status');
+});
+
 
 
 

@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Customer;
 
-use App\Http\Controllers\Controller;
-use App\Models\CartItem;
 use App\Models\Tire;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
+use App\Models\CartItem;
 use App\Models\OrderItem;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -98,7 +99,8 @@ class CartController extends Controller
             'billing_country' => 'required|string',
             'payment_method' => 'required|string',
         ]);
-    
+        
+        // dd($request->all());
         // Get user and cart data
         $userId = Auth::id();
         $cartItems = CartItem::where('user_id', $userId)->get();
@@ -108,44 +110,45 @@ class CartController extends Controller
         if ($cartItems->isEmpty()) {
             return back()->with('error', 'Your cart is empty.');
         }
-    
-        // Create order using object method
-        $order = new Order();
-        $order->user_id = $userId;
-        $order->name = $request->name;
-        $order->email = $request->email;
-        $order->phone = $request->phone;
-        $order->shipping_address = $request->shipping_address;
-        $order->shipping_city = $request->shipping_city;
-        $order->shipping_state = $request->shipping_state;
-        $order->shipping_zip = $request->shipping_zip;
-        $order->shipping_country = $request->shipping_country;
-        $order->billing_address = $request->billing_address;
-        $order->billing_city = $request->billing_city;
-        $order->billing_state = $request->billing_state;
-        $order->billing_zip = $request->billing_zip;
-        $order->billing_country = $request->billing_country;
-        $order->payment_method = $request->payment_method;
-        $order->total = $cartItems->sum(fn($item) => $item->price * $item->quantity);
-        $order->status = 'pending';
-        $order->save(); // Save the order
-    
-        foreach ($cartItems as $item) {
-            // dd($item);
-            if (!$item->tire_id) {
-                return back()->with('error', 'One or more items in your cart are missing product information.');
+        DB::transaction(function () use ($request, $userId, $cartItems) {
+            // Create order using object method
+            $order = new Order();
+            $order->user_id = $userId;
+            $order->name = $request->name;
+            $order->email = $request->email;
+            $order->phone = $request->phone;
+            $order->shipping_address = $request->shipping_address;
+            $order->shipping_city = $request->shipping_city;
+            $order->shipping_state = $request->shipping_state;
+            $order->shipping_zip = $request->shipping_zip;
+            $order->shipping_country = $request->shipping_country;
+            $order->billing_address = $request->billing_address;
+            $order->billing_city = $request->billing_city;
+            $order->billing_state = $request->billing_state;
+            $order->billing_zip = $request->billing_zip;
+            $order->billing_country = $request->billing_country;
+            $order->payment_method = $request->payment_method;
+            $order->total = $cartItems->sum(fn($item) => $item->price * $item->quantity);
+            $order->status = 'pending';
+            $order->save(); // Save the order
+        
+            foreach ($cartItems as $item) {
+                // dd($item);
+                if (!$item->tire_id) {
+                    return back()->with('error', 'One or more items in your cart are missing product information.');
+                }
+            
+                $orderItem = new OrderItem();
+                $orderItem->order_id = $order->id;
+                $orderItem->product_id = $item->tire_id;
+                $orderItem->quantity = $item->quantity;
+                $orderItem->price = $item->price;
+                $orderItem->save();
             }
         
-            $orderItem = new OrderItem();
-            $orderItem->order_id = $order->id;
-            $orderItem->product_id = $item->tire_id;
-            $orderItem->quantity = $item->quantity;
-            $orderItem->price = $item->price;
-            $orderItem->save();
-        }
-    
-        // Clear user's cart
-        CartItem::where('user_id', $userId)->delete();
+            // Clear user's cart
+            CartItem::where('user_id', $userId)->delete();
+        });
     
         return redirect()->route('tires.search')->with('success', 'Your order has been placed successfully!');
     }
