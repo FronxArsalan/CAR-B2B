@@ -25,6 +25,9 @@
                         @if (session('success'))
                             <div class="alert alert-success">{{ session('success') }}</div>
                         @endif
+                        <a href="{{ route('admin.orders.invoice', $order->id) }}" class="btn btn-outline-secondary btn-sm float-end">
+                            Download Invoice PDF
+                        </a>
                     </div>
                 </div>
                 <div class="row">

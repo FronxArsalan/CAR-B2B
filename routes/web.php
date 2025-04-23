@@ -70,6 +70,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::post('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.status');
+    Route::get('/orders/{order}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
+
 });
 
 

@@ -9,7 +9,7 @@
 
             <!-- Start Content-->
             <div class="container-fluid">
-                @if ($lowStockTires->count())
+                {{-- @if ($lowStockTires->count())
                     <div class="alert alert-warning">
                         <strong>⚠️ Low Stock Alert</strong>
                         <ul>
@@ -20,13 +20,240 @@
                     </div>
                 @else
                     <div class="alert alert-success">All tires are sufficiently stocked ✅</div>
-                @endif
+                @endif --}}
+                <div class="row">
+                    <div class="col-12">
+                        <div
+                            class="page-title-box justify-content-between d-flex align-items-md-center flex-md-row flex-column">
+                            <h4 class="page-title">Dashboard</h4>
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item active"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                                
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
 
+                    {{-- Total Orders --}}
+                    <div class="col-md-4 mb-3">
+                        <div class="card widget-icon-box">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div class="flex-grow-1 overflow-hidden">
+                                        <h5 class="text-muted text-uppercase fs-13 mt-0">Total Orders</h5>
+                                        <h3 class="my-3">{{ $totalOrders }}</h3>
+                                        <p class="mb-0 text-muted text-truncate">
+                                            @if ($orderGrowth > 0)
+                                                <span class="badge bg-success me-1">
+                                                    <i class="ri-arrow-up-line"></i> +{{ $orderGrowth }}%
+                                                </span>
+                                                Since last month
+                                            @elseif ($orderGrowth < 0)
+                                                <span class="badge bg-danger me-1">
+                                                    <i class="ri-arrow-down-line"></i> {{ $orderGrowth }}%
+                                                </span>
+                                                Dropped from last month
+                                            @else
+                                                <span class="badge bg-secondary me-1">
+                                                    <i class="ri-subtract-line"></i> 0%
+                                                </span>
+                                                No change from last month
+                                            @endif
+                                        </p>
+                                        
+                                    </div>
+                                    <div class="avatar-sm flex-shrink-0">
+                                        <span
+                                            class="avatar-title text-bg-success rounded rounded-3 fs-3 widget-icon-box-avatar shadow">
+                                            <i class="ri-shopping-bag-line"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-              
+                    {{-- Total Sales --}}
+                    <div class="col-md-4 mb-3">
+                        <div class="card widget-icon-box">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div class="flex-grow-1 overflow-hidden">
+                                        <h5 class="text-muted text-uppercase fs-13 mt-0">Total Sales</h5>
+                                        <h3 class="my-3">€{{ number_format($totalSales, 2) }}</h3>
+                                        <p class="mb-0 text-muted text-truncate">
+                                            @if ($salesGrowth > 0)
+                                                <span class="badge bg-primary me-1">
+                                                    <i class="ri-arrow-up-line"></i> +{{ $salesGrowth }}%
+                                                </span>
+                                                Higher than last month
+                                            @elseif ($salesGrowth < 0)
+                                                <span class="badge bg-danger me-1">
+                                                    <i class="ri-arrow-down-line"></i> {{ $salesGrowth }}%
+                                                </span>
+                                                Dropped from last month
+                                            @else
+                                                <span class="badge bg-secondary me-1">
+                                                    <i class="ri-subtract-line"></i> 0%
+                                                </span>
+                                                Same as last month
+                                            @endif
+                                        </p>
+                                        
+                                    </div>
+                                    <div class="avatar-sm flex-shrink-0">
+                                        <span
+                                            class="avatar-title text-bg-primary rounded rounded-3 fs-3 widget-icon-box-avatar shadow">
+                                            <i class="ri-currency-line"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-             
+                    {{-- Pending Orders --}}
+                    <div class="col-md-4 mb-3">
+                        <div class="card widget-icon-box">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div class="flex-grow-1 overflow-hidden">
+                                        <h5 class="text-muted text-uppercase fs-13 mt-0">Pending Orders</h5>
+                                        <h3 class="my-3">{{ $pendingOrders }}</h3>
+                                        <p class="mb-0 text-muted text-truncate">
+                                            <span class="badge bg-warning me-1"><i class="ri-time-line"></i> </span>
+                                            Waiting for Processing
+                                        </p>
+                                    </div>
+                                    <div class="avatar-sm flex-shrink-0">
+                                        <span
+                                            class="avatar-title text-bg-warning rounded rounded-3 fs-3 widget-icon-box-avatar shadow">
+                                            <i class="ri-timer-line"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
+                    {{-- Shipped Orders --}}
+                    <div class="col-md-4 mb-3">
+                        <div class="card widget-icon-box">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div class="flex-grow-1 overflow-hidden">
+                                        <h5 class="text-muted text-uppercase fs-13 mt-0">Shipped Orders</h5>
+                                        <h3 class="my-3">{{ $shippedOrders }}</h3>
+                                        <p class="mb-0 text-muted text-truncate">
+                                            <span class="badge bg-info me-1"><i class="ri-truck-line"></i></span>
+                                            On the way
+                                        </p>
+                                    </div>
+                                    <div class="avatar-sm flex-shrink-0">
+                                        <span
+                                            class="avatar-title text-bg-info rounded rounded-3 fs-3 widget-icon-box-avatar shadow">
+                                            <i class="ri-truck-fill"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Delivered Orders --}}
+                    <div class="col-md-4 mb-3">
+                        <div class="card widget-icon-box">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div class="flex-grow-1 overflow-hidden">
+                                        <h5 class="text-muted text-uppercase fs-13 mt-0">Delivered Orders</h5>
+                                        <h3 class="my-3">{{ $deliveredOrders }}</h3>
+                                        <p class="mb-0 text-muted text-truncate">
+                                            <span class="badge bg-dark me-1"><i class="ri-check-double-line"></i></span>
+                                            Completed
+                                        </p>
+                                    </div>
+                                    <div class="avatar-sm flex-shrink-0">
+                                        <span
+                                            class="avatar-title text-bg-dark rounded rounded-3 fs-3 widget-icon-box-avatar shadow">
+                                            <i class="ri-check-line"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Cancelled Orders --}}
+                    <div class="col-md-4 mb-3">
+                        <div class="card widget-icon-box">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div class="flex-grow-1 overflow-hidden">
+                                        <h5 class="text-muted text-uppercase fs-13 mt-0">Cancelled Orders</h5>
+                                        <h3 class="my-3">{{ $cancelledOrders }}</h3>
+                                        <p class="mb-0 text-muted text-truncate">
+                                            <span class="badge bg-danger me-1"><i class="ri-close-line"></i></span>
+                                            Canceled
+                                        </p>
+                                    </div>
+                                    <div class="avatar-sm flex-shrink-0">
+                                        <span
+                                            class="avatar-title text-bg-danger rounded rounded-3 fs-3 widget-icon-box-avatar shadow">
+                                            <i class="ri-close-circle-line"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Low Stock Tires Table --}}
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="d-flex card-header justify-content-between align-items-center">
+                                <h4 class="header-title">Low Stock Tires</h4>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-borderless table-hover table-nowrap table-centered m-0">
+                                        <thead class="border-top border-bottom bg-light-subtle border-light">
+                                            <tr>
+                                                <th class="py-1">Product</th>
+                                                <th class="py-1">Price</th>
+                                                <th class="py-1">Stock</th>
+                                                <th class="py-1">Brand</th>
+                                                <th class="py-1">Size</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse($lowStockList as $tire)
+                                                <tr>
+                                                    <td>{{ $tire->nr_article }}</td>
+                                                    <td>€{{ number_format($tire->prix, 2) }}</td>
+                                                    <td><span class="badge bg-danger">{{ $tire->quantite }}</span></td>
+                                                    <td>{{ $tire->marque }}</td>
+                                                    <td>{{ $tire->tire_size }}</td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="5" class="text-center text-muted">No low stock tires 🚗
+                                                    </td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="text-center">
+                                    <a href="{{ route('tires.inventory') }}"
+                                        class="text-primary text-decoration-underline fw-bold btn mb-2">View All Tires</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
             <!-- container -->
 
