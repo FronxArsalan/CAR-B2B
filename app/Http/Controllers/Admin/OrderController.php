@@ -6,6 +6,8 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
+use App\Mail\OrderStatusUpdatedMail;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -49,6 +51,8 @@ class OrderController extends Controller
 
         $order->status = $request->status;
         $order->save();
+
+        Mail::to($order->email)->send(new OrderStatusUpdatedMail($order));
 
         return back()->with('success', 'Order status updated.');
     }

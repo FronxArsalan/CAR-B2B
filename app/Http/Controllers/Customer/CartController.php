@@ -7,9 +7,12 @@ use App\Models\Order;
 use App\Models\CartItem;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use App\Mail\OrderPlacedMail;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class CartController extends Controller
 {
@@ -148,6 +151,10 @@ class CartController extends Controller
         
             // Clear user's cart
             CartItem::where('user_id', $userId)->delete();
+
+            Mail::to($order->email)->send(new OrderPlacedMail($order));
+
+            Log::info('Order placed successfully for user ID: ' . $userId);
         });
     
         return redirect()->route('tires.search')->with('success', 'Your order has been placed successfully!');

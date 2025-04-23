@@ -28,7 +28,7 @@
                             <h4 class="page-title">Dashboard</h4>
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item active"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                                
+
                             </ol>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                                                 No change from last month
                                             @endif
                                         </p>
-                                        
+
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span
@@ -100,7 +100,7 @@
                                                 Same as last month
                                             @endif
                                         </p>
-                                        
+
                                     </div>
                                     <div class="avatar-sm flex-shrink-0">
                                         <span
@@ -208,7 +208,127 @@
                             </div>
                         </div>
                     </div>
+                    {{-- Daily Sales Widget --}}
+                    <div class="col-md-4 mb-3">
+                        <div class="card widget-icon-box">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div class="flex-grow-1 overflow-hidden">
+                                        <h5 class="text-muted text-uppercase fs-13 mt-0">Today's Sales</h5>
+                                        <h3 class="my-3">€{{ number_format($salesToday, 2) }}</h3>
+                                        <p class="text-muted">Orders: <strong>{{ $ordersToday }}</strong></p>
+                                        <p class="mb-0 text-muted text-truncate">
+                                            @if ($dailySalesGrowth > 0)
+                                                <span class="badge bg-success me-1"><i class="ri-arrow-up-line"></i>
+                                                    +{{ $dailySalesGrowth }}%</span>
+                                                Growth from yesterday
+                                            @elseif ($dailySalesGrowth < 0)
+                                                <span class="badge bg-danger me-1"><i class="ri-arrow-down-line"></i>
+                                                    {{ $dailySalesGrowth }}%</span>
+                                                Drop from yesterday
+                                            @else
+                                                <span class="badge bg-secondary me-1"><i class="ri-subtract-line"></i>
+                                                    0%</span>
+                                                Same as yesterday
+                                            @endif
+                                        </p>
+                                    </div>
+                                    <div class="avatar-sm flex-shrink-0">
+                                        <span
+                                            class="avatar-title text-bg-success rounded rounded-3 fs-3 widget-icon-box-avatar shadow">
+                                            <i class="ri-calendar-check-line"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- Today's Orders Widget --}}
+                    <div class="col-md-4 mb-3">
+                        <div class="card widget-icon-box">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div class="flex-grow-1 overflow-hidden">
+                                        <h5 class="text-muted text-uppercase fs-13 mt-0">Today's Orders</h5>
+                                        <h3 class="my-3">{{ $ordersToday }}</h3>
+                                        <p class="mb-0 text-muted text-truncate">
+                                            <span class="badge bg-info me-1"><i class="ri-bar-chart-line"></i></span>
+                                            Processed Today
+                                        </p>
+                                    </div>
+                                    <div class="avatar-sm flex-shrink-0">
+                                        <span
+                                            class="avatar-title text-bg-info rounded rounded-3 fs-3 widget-icon-box-avatar shadow">
+                                            <i class="ri-order-play-line"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- This Week Sales --}}
+                    <div class="col-md-4 mb-3">
+                        <div class="card widget-icon-box">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div class="flex-grow-1 overflow-hidden">
+                                        <h5 class="text-muted text-uppercase fs-13 mt-0">This Week's Sales</h5>
+                                        <h3 class="my-3">€{{ number_format($salesThisWeek, 2) }}</h3>
+                                        <p class="text-muted">Orders: <strong>{{ $ordersThisWeek }}</strong></p>
+                                        <p class="mb-0 text-muted text-truncate">
+                                            @if ($weeklyGrowth > 0)
+                                                <span class="badge bg-success me-1"><i class="ri-arrow-up-line"></i> +{{ $weeklyGrowth }}%</span>
+                                                Growth from last week
+                                            @elseif ($weeklyGrowth < 0)
+                                                <span class="badge bg-danger me-1"><i class="ri-arrow-down-line"></i> {{ $weeklyGrowth }}%</span>
+                                                Drop from last week
+                                            @else
+                                                <span class="badge bg-secondary me-1"><i class="ri-subtract-line"></i> 0%</span>
+                                                Same as last week
+                                            @endif
+                                        </p>
+                                        
+                                    </div>
+                                    <div class="avatar-sm flex-shrink-0">
+                                        <span
+                                            class="avatar-title text-bg-primary rounded rounded-3 fs-3 widget-icon-box-avatar shadow">
+                                            <i class="ri-calendar-event-line"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- This Month Sales --}}
+                    <div class="col-md-4 mb-3">
+                        <div class="card widget-icon-box">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div class="flex-grow-1 overflow-hidden">
+                                        <h5 class="text-muted text-uppercase fs-13 mt-0">This Month's Sales</h5>
+                                        <h3 class="my-3">€{{ number_format($salesThisMonth, 2) }}</h3>
+                                        <p class="text-muted">Orders: <strong>{{ $ordersThisMonth }}</strong></p>
+                                    </div>
+                                    <div class="avatar-sm flex-shrink-0">
+                                        <span
+                                            class="avatar-title text-bg-info rounded rounded-3 fs-3 widget-icon-box-avatar shadow">
+                                            <i class="ri-calendar-month-line"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
+
+
+
+
+
+
+
+                </div>
+                <div class="row">
                     {{-- Low Stock Tires Table --}}
                     <div class="col-md-6 mb-3">
                         <div class="card">
@@ -238,7 +358,8 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="5" class="text-center text-muted">No low stock tires 🚗
+                                                    <td colspan="5" class="text-center text-muted">No low stock tires
+                                                        🚗
                                                     </td>
                                                 </tr>
                                             @endforelse
@@ -252,7 +373,41 @@
                             </div>
                         </div>
                     </div>
-
+                    {{-- Best Selling Tires --}}
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="d-flex card-header justify-content-between align-items-center">
+                                <h4 class="header-title">Best Selling Tires</h4>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-borderless table-hover table-nowrap table-centered m-0">
+                                        <thead class="border-top border-bottom bg-light-subtle border-light">
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Brand</th>
+                                                <th>Sold Qty</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($bestSellingTires as $tire)
+                                                <tr>
+                                                    <td>{{ $tire->tire_size }}</td>
+                                                    <td>{{ $tire->marque }}</td>
+                                                    <td><span class="badge bg-success">{{ $tire->total_sold }}</span></td>
+                                                </tr>
+                                            @endforeach
+                                            @if ($bestSellingTires->isEmpty())
+                                                <tr>
+                                                    <td colspan="3" class="text-center text-muted">No data yet 📉</td>
+                                                </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- container -->
@@ -286,5 +441,4 @@
     <!-- ============================================================== -->
     <!-- End Page content -->
     <!-- ============================================================== -->
-
 @endsection
