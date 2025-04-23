@@ -379,8 +379,8 @@
                                     width="32" class="rounded-circle">
                             </span>
                             <span class="d-lg-flex flex-column gap-1 d-none">
-                                <h5 class="my-0">Doris Larson</h5>
-                                <h6 class="my-0 fw-normal">Founder</h6>
+                                <h5 class="my-0">{{Auth::user()->user_name}}</h5>
+                                <h6 class="my-0 fw-normal">{{Auth::user()->role}}</h6>
                             </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated profile-dropdown">

@@ -58,3 +58,12 @@ Route::prefix('cart')->name('cart.')->group(function () {
     // cart count
     Route::get('/count', [CartController::class, 'count'])->name('count');
 });
+
+
+
+// checkout place order
+Route::get('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+Route::post('/place-order', [CartController::class, 'placeOrder'])->name('cart.placeOrder');
+
+
+

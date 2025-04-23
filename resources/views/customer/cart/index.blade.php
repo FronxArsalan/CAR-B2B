@@ -94,7 +94,7 @@
                                             @csrf
                                             <button class="btn btn-warning btn-sm">Clear Cart</button>
                                         </form>
-                                        <a href="" class="btn btn-success">Proceed to Checkout</a>
+                                        <a href="{{ route('cart.checkout') }}" class="btn btn-success">Proceed to Checkout</a>
                                     </div>
                                 @else
                                     <p>Your cart is empty.</p>
