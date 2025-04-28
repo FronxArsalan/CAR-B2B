@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -17,12 +18,36 @@ class AdminController extends Controller
     public function index()
     {
         $data['header_title'] = 'Admin Dashboard';
+        // Check if user is logged in
+        $user = Auth::user();
+
+        if ($user) {
+            // User-specific order stats
+            $data['totalOrdersUser'] = Order::where('user_id', $user->id)->count();
+            $data['pendingOrdersUser'] = Order::where('user_id', $user->id)->where('status', 'pending')->count();
+            $data['processingOrdersUser'] = Order::where('user_id', $user->id)->where('status', 'processing')->count();
+            $data['shippedOrdersUser'] = Order::where('user_id', $user->id)->where('status', 'shipped')->count();
+            $data['deliveredOrdersUser'] = Order::where('user_id', $user->id)->where('status', 'delivered')->count();
+            $data['cancelledOrdersUser'] = Order::where('user_id', $user->id)->where('status', 'cancelled')->count();
+        }
 
         // Low stock tires
-        $data['lowStockList'] = Tire::whereColumn('quantite', '<=', 'low_stock_threshold')
+        $lowStockThreshold = config('tires.low_stock_threshold', 5);
+        $data['lowStockList'] = Tire::where('quantite', '<=', $lowStockThreshold)
             ->orderBy('quantite')
             ->take(5)
             ->get();
+
+        // Add missing chart data
+        $data['ordersChartData'] = Order::selectRaw('DAY(created_at) as day, COUNT(*) as count')
+            ->whereMonth('created_at', now()->month)
+            ->groupBy('day')
+            ->pluck('count');
+
+        $data['revenueChartData'] = Order::selectRaw('DAY(created_at) as day, SUM(total) as sum')
+            ->whereMonth('created_at', now()->month)
+            ->groupBy('day')
+            ->pluck('sum');
 
         // Order stats
         $data['totalOrders'] = Order::count();
@@ -139,6 +164,25 @@ class AdminController extends Controller
         $data['orderGrowth'] = $orderGrowth;
         $data['salesGrowth'] = $salesGrowth;
         $data['dailySalesGrowth'] = $dailySalesGrowth;
+
+        // 📊 Monthly Sales Chart (Daily Breakdown)
+        $daysInMonth = $now->daysInMonth;
+
+        $dailySales = collect(range(1, $daysInMonth))->map(function ($day) use ($now) {
+            return Order::where('status', '!=', 'cancelled')
+                ->whereDay('created_at', $day)
+                ->whereMonth('created_at', $now->month)
+                ->whereYear('created_at', $now->year)
+                ->sum('total');
+        });
+
+        $data['salesChartLabels'] = collect(range(1, $daysInMonth))->map(function ($d) {
+            return str_pad($d, 2, '0', STR_PAD_LEFT); // "01", "02", ...
+        });
+
+        $data['salesChartData'] = $dailySales;
+
+        // dd($data['salesChartData'],$data['salesChartData']);
 
         return view('admin.index', $data);
     }

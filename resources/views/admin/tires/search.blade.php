@@ -91,7 +91,9 @@
                                                 <th>Stock</th>
                                                 <th>Wholesale (€)</th>
                                                 <th>Retail (€)</th>
-                                                <th>Actions</th>
+                                                @if (Auth::user()->role == 'user')
+                                                    <th>Actions</th>
+                                                @endif
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -116,23 +118,26 @@
                                                     </td>
                                                     <td>{{ number_format($tire->prix_pro, 2) }}</td>
                                                     <td>{{ number_format($tire->prix, 2) }}</td>
-                                                    <td>
-                                                        <div class="">
+                                                    @if (Auth::user()->role == 'user')
+                                                        <td>
+                                                            <div class="">
 
 
-                                                            <form action="{{ route('cart.add', $tire->id) }}"
-                                                                method="POST" class="m-0">
-                                                                @csrf
-                                                                <input type="number" name="quantity" value="1"
-                                                                    min="1" style="width: 60px;"
-                                                                    class="form-control form-control-sm">
-                                                                <button type="submit" class="btn btn-sm btn-primary m-0">
-                                                                    <i class="ri-shopping-cart-line"></i>
-                                                                </button>
-                                                            </form>
-                                                        </div>
+                                                                <form action="{{ route('cart.add', $tire->id) }}"
+                                                                    method="POST" class="m-0">
+                                                                    @csrf
+                                                                    <input type="number" name="quantity" value="1"
+                                                                        min="1" style="width: 60px;"
+                                                                        class="form-control form-control-sm">
+                                                                    <button type="submit"
+                                                                        class="btn btn-sm btn-primary m-0">
+                                                                        <i class="ri-shopping-cart-line"></i>
+                                                                    </button>
+                                                                </form>
+                                                            </div>
 
-                                                    </td>
+                                                        </td>
+                                                    @endif
                                                 </tr>
                                             @endforeach
                                         </tbody>

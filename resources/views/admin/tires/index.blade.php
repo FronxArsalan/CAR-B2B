@@ -33,6 +33,8 @@
                                         <a href="{{ route('tires.create') }}" class="btn btn-primary mb-3">Add New Tire</a>
                                         <a href="{{ route('tires.import.form') }}" class="btn btn-secondary mb-3">Import
                                             CSV</a>
+                                        
+                                            <a href="{{ route('fetch-google-sheet') }}" onclick="return confirm('Are you sure?')" class="btn btn-info mb-3">Manual Sync</a>
                                     </div>
                                 </div>
 

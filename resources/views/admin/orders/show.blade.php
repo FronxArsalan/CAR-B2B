@@ -96,30 +96,32 @@
                             </div>
                         </div>
 
-                        {{-- Status Update --}}
-                        <div class="card">
-                            <div class="card-header fw-bold">Order Status</div>
-                            <div class="card-body">
-                                <form method="POST" action="{{ route('admin.orders.status', $order->id) }}">
-                                    @csrf
-                                    <div class="row align-items-center">
-                                        <div class="col-md-6">
-                                            <select name="status" class="form-select">
-                                                @foreach (['pending', 'processing', 'shipped', 'delivered', 'cancelled'] as $status)
-                                                    <option value="{{ $status }}"
-                                                        {{ $order->status == $status ? 'selected' : '' }}>
-                                                        {{ ucfirst($status) }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <button type="submit" class="btn btn-primary">Update Status</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                         {{-- Status Update --}}
+                         @if(Auth::user()->role == 'admin')
+                         <div class="card">
+                             <div class="card-header fw-bold">Order Status</div>
+                             <div class="card-body">
+                                 <form method="POST" action="{{ route('admin.orders.status', $order->id) }}">
+                                     @csrf
+                                     <div class="row align-items-center">
+                                         <div class="col-md-6">
+                                             <select name="status" class="form-select">
+                                                 @foreach (['pending', 'processing', 'shipped', 'delivered', 'cancelled'] as $status)
+                                                     <option value="{{ $status }}"
+                                                         {{ $order->status == $status ? 'selected' : '' }}>
+                                                         {{ ucfirst($status) }}
+                                                     </option>
+                                                 @endforeach
+                                             </select>
+                                         </div>
+                                         <div class="col-md-6">
+                                             <button type="submit" class="btn btn-primary">Update Status</button>
+                                         </div>
+                                     </div>
+                                 </form>
+                             </div>
+                         </div>
+                         @endif
                     </div>
                 </div>
 

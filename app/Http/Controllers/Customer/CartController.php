@@ -26,13 +26,28 @@ class CartController extends Controller
 
     public function add(Request $request, Tire $tire)
     {
+        $quantityRequested = $request->input('quantity', 1);
+
+        // Check the available stock for the tire
+        $availableStock = $tire->quantite; // Assuming `stock` is the field for stock quantity in the `tires` table
+
+        // If the requested quantity is greater than the available stock, notify the user
+        if ($quantityRequested > $availableStock) {
+            return back()->with('error', 'Only ' . $availableStock . ' items are available in stock!');
+        }
+
         $cartItem = CartItem::firstOrNew([
             'user_id' => Auth::id(),
             'tire_id' => $tire->id,
         ]);
-        
-        $cartItem->quantity += $request->input('quantity', 1);
-        $cartItem->price = $tire->getDiscountedPrice($request->quantity);
+
+        $cartItem->quantity += $quantityRequested;
+        $cartItem->price = $tire->getDiscountedPrice($quantityRequested);
+
+        // Check again after adding to ensure stock isn't exceeded
+        if ($cartItem->quantity > $availableStock) {
+            return back()->with('error', 'Only ' . $availableStock . ' items are available in stock!');
+        }
 
         $cartItem->save();
 
@@ -64,6 +79,7 @@ class CartController extends Controller
     }
     public function count()
     {
+        $count = 0;
         $count = CartItem::where('user_id', Auth::id())->count();
         return response()->json(['count' => $count]);
     }
@@ -136,17 +152,26 @@ class CartController extends Controller
             $order->save(); // Save the order
         
             foreach ($cartItems as $item) {
-                // dd($item);
                 if (!$item->tire_id) {
                     return back()->with('error', 'One or more items in your cart are missing product information.');
                 }
             
+                $tire = Tire::find($item->tire_id);
+                if (!$tire) {
+                    return back()->with('error', 'The product for one of your cart items is no longer available.');
+                }
+            
+                // Create Order Item
                 $orderItem = new OrderItem();
                 $orderItem->order_id = $order->id;
                 $orderItem->product_id = $item->tire_id;
                 $orderItem->quantity = $item->quantity;
                 $orderItem->price = $item->price;
                 $orderItem->save();
+            
+                // Deduct stock based on quantity ordered
+                $tire->quantite -= $item->quantity;
+                $tire->save();
             }
         
             // Clear user's cart

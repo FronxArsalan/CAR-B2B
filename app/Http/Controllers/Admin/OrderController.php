@@ -7,34 +7,42 @@ use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
 use App\Mail\OrderStatusUpdatedMail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Order::with('user')->latest();
-
-        // Filter by status (optional)
+        $user = Auth::user();
+        $query = Order::with('user');
+        
+        if ($user->role == 'user') {
+            $query->where('user_id', $user->id);
+        }
+    
         if ($request->filled('status') && $request->status !== 'all') {
             $query->where('status', $request->status);
         }
-
-        // 🔍 Search by order ID or customer info
+    
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('id', $search)
-                    ->orWhere('name', 'like', "%$search%")
-                    ->orWhere('email', 'like', "%$search%")
-                    ->orWhere('phone', 'like', "%$search%");
+                  ->orWhere('name', 'like', "%$search%")
+                  ->orWhere('email', 'like', "%$search%")
+                  ->orWhere('phone', 'like', "%$search%");
             });
         }
+    
+        $orders = $query->latest()->get(); // ✅ Now this works: fetches all, ordered by latest
 
-        $orders = $query->paginate(15);
-
+    
         return view('admin.orders.index', compact('orders'));
     }
+    
+    
+
 
 
     public function show(Order $order)

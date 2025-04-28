@@ -15,7 +15,7 @@ class IsCustomer
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->user()->role !== 'customer') {
+        if (auth()->user()->role !== 'user') {
             abort(403);
         }
         return $next($request);
