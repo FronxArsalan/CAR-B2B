@@ -15,7 +15,7 @@ class ProductsImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
        
-        return new Tire::updateOrCreate(
+        return Tire::updateOrCreate(
             ['nr_article' => $row['nr article']], // Matching field
             [
                 'largeur'     => $row['Largeur'],

@@ -38,21 +38,54 @@
                         <form action="{{ route('tires.search') }}" method="GET" class="d-flex flex-wrap gap-2">
                             <div class="form-group" id="taille-group">
                                 <label for="taille">Taille / Code Produit</label>
-                                <input type="text" name="tire_size" id="taille" value="{{ request('tire_size') }}"
-                                    placeholder="P. ex. 205/55R16 ou 2055516" class="form-control">
+                                <input type="text" name="tire_size" id="taille" value="{{ request('tire_size') }}" placeholder="P. ex. 205/55R16 ou 2055516" class="form-control">
                             </div>
-
+                        
                             <div class="form-group" id="marque-group">
                                 <label for="marque">Marque</label>
-                                <input type="text" name="mark" id="marque" value="{{ request('mark') }}"
-                                    placeholder="Marque" class="form-control">
+                                <input type="text" name="mark" id="marque" value="{{ request('mark') }}" placeholder="Marque" class="form-control">
                             </div>
-
+                        
+                            <div class="form-group" id="saison-group">
+                                <label class="form-label">Saison</label>
+                                <div class="d-flex justify-content-start align-items-center gap-3">
+                        
+                                    <div class="text-center">
+                                        <input type="checkbox" class="btn-check" name="saison[]" id="saison_ete" value="Summer" autocomplete="off" 
+                                            {{ is_array(request('saison')) && in_array('Summer', request('saison')) ? 'checked' : '' }}>
+                                        <label class="btn btn-outline-primary" for="saison_ete" style="padding: 5px; border-radius: 10px;">
+                                            <img src="{{ asset('assets/images/sun.png') }}" alt="Été" style="width: 30px; height: 30px; object-fit: cover;">
+                                        </label>
+                                        <div class="mt-1 small">Été</div>
+                                    </div>
+                        
+                                    <div class="text-center">
+                                        <input type="checkbox" class="btn-check" name="saison[]" id="saison_hiver" value="winter" autocomplete="off"
+                                            {{ is_array(request('saison')) && in_array('winter', request('saison')) ? 'checked' : '' }}>
+                                        <label class="btn btn-outline-primary" for="saison_hiver" style="padding: 5px; border-radius: 10px;">
+                                            <img src="{{ asset('assets/images/winter.png') }}" alt="Hiver" style="width: 30px; height: 30px; object-fit: cover;">
+                                        </label>
+                                        <div class="mt-1 small">Hiver</div>
+                                    </div>
+                        
+                                    <div class="text-center">
+                                        <input type="checkbox" class="btn-check" name="saison[]" id="saison_toute" value="all seasons" autocomplete="off"
+                                            {{ is_array(request('saison')) && in_array('all seasons', request('saison')) ? 'checked' : '' }}>
+                                        <label class="btn btn-outline-primary" for="saison_toute" style="padding: 5px; border-radius: 10px;">
+                                            <img src="{{ asset('assets/images/sun-winter.jpg') }}" alt="Toute Saison" style="width: 30px; height: 30px; object-fit: cover;">
+                                        </label>
+                                        <div class="mt-1 small">Toute Saison</div>
+                                    </div>
+                        
+                                </div>
+                            </div>
+                        
                             <div class="form-group align-self-end">
                                 <button type="submit" class="btn btn-primary">Filter</button>
                                 <a href="{{ route('tires.search') }}" class="btn btn-success mt-1">Reset</a>
                             </div>
                         </form>
+                        
 
                     </div>
                     <div class="col-xl-12 my-col-xl-12">

@@ -200,10 +200,16 @@ class TireController extends Controller
             $query->where('mark', 'like', '%' . $request->mark . '%');
         }
 
+        // Saison multiple values
+        if ($request->filled('saison')) {
+            $query->whereIn('saison', $request->saison);
+        }
+
         $tires = $query->get();
 
         return view('admin.tires.search', compact('tires'));
     }
+
 
     public function exportProducts()
     {

@@ -56,7 +56,13 @@ class OrderController extends Controller
         $request->validate([
             'status' => 'required|in:pending,processing,shipped,delivered,cancelled'
         ]);
+        // check the cancelled status and stock quantity update
+        if ($request->status == 'cancelled') {
+            foreach ($order->items as $item) {
+                $item->tire->increment('quantite', $item->quantity);
+            }
 
+        }
         $order->status = $request->status;
         $order->save();
 
