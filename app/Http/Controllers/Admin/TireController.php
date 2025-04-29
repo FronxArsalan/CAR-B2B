@@ -189,7 +189,10 @@ class TireController extends Controller
 
     // search
     public function search(Request $request)
-    {
+{
+    $tires = collect(); // empty collection by default
+
+    if ($request->filled('tire_size') || $request->filled('mark') || $request->filled('saison')) {
         $query = Tire::query();
 
         if ($request->filled('tire_size')) {
@@ -200,15 +203,15 @@ class TireController extends Controller
             $query->where('mark', 'like', '%' . $request->mark . '%');
         }
 
-        // Saison multiple values
         if ($request->filled('saison')) {
             $query->whereIn('saison', $request->saison);
         }
 
         $tires = $query->get();
-
-        return view('admin.tires.search', compact('tires'));
     }
+
+    return view('admin.tires.search', compact('tires'));
+}
 
 
     public function exportProducts()

@@ -45,6 +45,7 @@
                                             <th>User Name</th>
                                             <th>Email</th>
                                             <th>Phone Number</th>
+                                            <th>Role</th>
                                             <th>Register at</th>
                                             <th>Status</th>
                                             <th>Actions</th>
@@ -60,6 +61,7 @@
                                             <td>{{$item->user_name}}</td>
                                             <td>{{$item->email}}</td>
                                             <td>{{$item->phone_no}}</td>
+                                            <td>{{$item->role}}</td>
                                             <td>{{ optional($item->created_at)->format('Y-m-d') ?? 'N/A' }}</td>
                                             <td>
                                                 @if ($item->status == 1)

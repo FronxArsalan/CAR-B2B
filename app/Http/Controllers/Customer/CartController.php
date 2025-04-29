@@ -111,24 +111,23 @@ class CartController extends Controller
             'shipping_zip' => 'required|string',
             'payment_method' => 'required|string',
         ]);
-
-
-        // dd($request->all());
+        
         // Get user and cart data
         $userId = Auth::id();
         $cartItems = CartItem::where('user_id', $userId)->get();
-
-
-
+        
         if ($cartItems->isEmpty()) {
             return back()->with('error', 'Your cart is empty.');
         }
+        
+        // Start transaction
         DB::transaction(function () use ($request, $userId, $cartItems) {
-            // Create order using object method
-            // Create order
-            // check payment method
-            if($request->payment_method == 'cash'){
+            $order = null;
+            
+            // Check payment method
+            if ($request->payment_method == 'cash on delivery') {
 
+                // Create order for "cash on delivery"
                 $order = new Order();
                 $order->user_id = $userId;
                 $order->name = $request->name;
@@ -137,27 +136,28 @@ class CartController extends Controller
                 $order->shipping_address = $request->shipping_address;
                 $order->shipping_city = $request->shipping_city;
                 $order->shipping_zip = $request->shipping_zip;
-    
+
                 // Billing address handling
                 $order->billing_address = $request->billing_address ?? $request->shipping_address;
                 $order->billing_city = $request->billing_city ?? $request->shipping_city;
                 $order->billing_zip = $request->billing_zip ?? $request->shipping_zip;
-    
+
                 $order->payment_method = $request->payment_method;
                 $order->total = $cartItems->sum(fn($item) => $item->price * $item->quantity);
                 $order->status = 'pending';
                 $order->save();
-    
+
+                // Process each cart item
                 foreach ($cartItems as $item) {
                     if (!$item->tire_id) {
                         return back()->with('error', 'One or more items in your cart are missing product information.');
                     }
-    
+
                     $tire = Tire::find($item->tire_id);
                     if (!$tire) {
                         return back()->with('error', 'The product for one of your cart items is no longer available.');
                     }
-    
+
                     // Create Order Item
                     $orderItem = new OrderItem();
                     $orderItem->order_id = $order->id;
@@ -165,21 +165,28 @@ class CartController extends Controller
                     $orderItem->quantity = $item->quantity;
                     $orderItem->price = $item->price;
                     $orderItem->save();
-    
+
                     // Deduct stock based on quantity ordered
                     $tire->quantite -= $item->quantity;
                     $tire->save();
                 }
+                
             }
 
-            // Clear user's cart
+            // Clear user's cart after order placement
             CartItem::where('user_id', $userId)->delete();
 
-            Mail::to($order->email)->send(new OrderPlacedMail($order));
-
-            Log::info('Order placed successfully for user ID: ' . $userId);
+            // Send order confirmation email
+            if ($order) {
+                Mail::to($order->email)->send(new OrderPlacedMail($order));
+                Log::info('Order placed successfully for user ID: ' . $userId);
+            }
         });
 
         return redirect()->route('tires.search')->with('success', 'Your order has been placed successfully!');
     }
+
+
+
+
 }

@@ -9,7 +9,6 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\LangugeController;
-use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SupportTicketController;
 use App\Http\Controllers\Customer\CartController;
 
@@ -51,14 +50,22 @@ Route::middleware(['authenticate'])->group(function () {
         Route::post('/{ticket}/reply', [SupportTicketController::class, 'reply'])->name('support.reply');
     });
 });
+// stock_manager and admin
+Route::middleware(['is_stock_manager'])->group(function () {
+    Route::resource('tires', TireController::class);
+    Route::get('/tire/inventory', [TireController::class, 'inventory'])->name('tires.inventory');
 
+    Route::get('tire/import', [TireController::class, 'showImportForm'])->name('tires.import.form');
+    Route::post('tire/import', [TireController::class, 'import'])->name('tires.import');
 
+    Route::post('/admin/sync-products', [TireController::class, 'syncProductsManually'])->name('admin.sync-products');
+
+    Route::get('/admin/google-sheet', [TireController::class, 'fetchSheetData'])->name('fetch-google-sheet');
+});
 // authenticate and admin
 Route::middleware(['authenticate', 'is_admin'])->group(function () {
 
-    Route::resource('tires', TireController::class);
-    Route::resource('products', ProductController::class);
-    Route::get('/tire/inventory', [TireController::class, 'inventory'])->name('tires.inventory');
+
 
     // add user
     Route::prefix('user')->group(function () {
@@ -71,8 +78,7 @@ Route::middleware(['authenticate', 'is_admin'])->group(function () {
         Route::post('/status/{id}', [UserController::class, 'status'])->name('user.status');
     });
 
-    Route::get('tire/import', [TireController::class, 'showImportForm'])->name('tires.import.form');
-    Route::post('tire/import', [TireController::class, 'import'])->name('tires.import');
+    
 
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.status');
@@ -80,9 +86,7 @@ Route::middleware(['authenticate', 'is_admin'])->group(function () {
     });
 
 
-    Route::post('/admin/sync-products', [TireController::class, 'syncProductsManually'])->name('admin.sync-products');
-
-    Route::get('/admin/google-sheet', [TireController::class, 'fetchSheetData'])->name('fetch-google-sheet');
+    
 });
 
 
@@ -101,3 +105,4 @@ Route::middleware(['authenticate', 'is_customer'])->group(function () {
     Route::get('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
     Route::post('/place-order', [CartController::class, 'placeOrder'])->name('cart.placeOrder');
 });
+

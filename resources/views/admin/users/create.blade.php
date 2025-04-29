@@ -21,48 +21,84 @@
                                 <!-- Full Name -->
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Full Name</label>
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter full name" value="{{ old('name') }}">
-                                    @error('name') <small class="text-danger">{{ $message }}</small> @enderror
+                                    <input type="text" class="form-control" id="name" name="name"
+                                        placeholder="Enter full name" value="{{ old('name') }}">
+                                    @error('name')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
 
                                 <!-- Username -->
                                 <div class="mb-3">
                                     <label for="user_name" class="form-label">Username</label>
-                                    <input type="text" class="form-control" id="user_name" name="user_name" placeholder="Enter username" value="{{ old('user_name') }}">
-                                    @error('user_name') <small class="text-danger">{{ $message }}</small> @enderror
+                                    <input type="text" class="form-control" id="user_name" name="user_name"
+                                        placeholder="Enter username" value="{{ old('user_name') }}">
+                                    @error('user_name')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
 
                                 <!-- Email -->
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" value="{{ old('email') }}">
-                                    @error('email') <small class="text-danger">{{ $message }}</small> @enderror
+                                    <input type="email" class="form-control" id="email" name="email"
+                                        placeholder="Enter email" value="{{ old('email') }}">
+                                    @error('email')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
 
                                 <!-- Phone -->
                                 <div class="mb-3">
                                     <label for="phone_no" class="form-label">Phone No</label>
-                                    <input type="text" class="form-control" id="phone_no" name="phone_no" placeholder="Enter phone number" value="{{ old('phone_no') }}">
-                                    @error('phone_no') <small class="text-danger">{{ $message }}</small> @enderror
+                                    <input type="text" class="form-control" id="phone_no" name="phone_no"
+                                        placeholder="Enter phone number" value="{{ old('phone_no') }}">
+                                    @error('phone_no')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
 
                                 <!-- Password -->
                                 <div class="mb-3 position-relative">
                                     <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
-                                    <span class="position-absolute top-50 end-0 translate-middle-y me-3" onclick="togglePassword('password', 'toggleEye1')" style="cursor: pointer;">
+                                    <input type="password" class="form-control" id="password" name="password"
+                                        placeholder="Enter password">
+                                    <span class="position-absolute top-50 end-0 translate-middle-y me-3"
+                                        onclick="togglePassword('password', 'toggleEye1')" style="cursor: pointer;">
                                         <i class="fas fa-eye" id="toggleEye1"></i>
                                     </span>
-                                    @error('password') <small class="text-danger">{{ $message }}</small> @enderror
+                                    @error('password')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
 
                                 <!-- Confirm Password -->
                                 <div class="mb-3 position-relative">
                                     <label for="password_confirmation" class="form-label">Confirm Password</label>
-                                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm password">
-                                    <span class="position-absolute top-50 end-0 translate-middle-y me-3" onclick="togglePassword('password_confirmation', 'toggleEye2')" style="cursor: pointer;">
+                                    <input type="password" class="form-control" id="password_confirmation"
+                                        name="password_confirmation" placeholder="Confirm password">
+                                    <span class="position-absolute top-50 end-0 translate-middle-y me-3"
+                                        onclick="togglePassword('password_confirmation', 'toggleEye2')"
+                                        style="cursor: pointer;">
                                         <i class="fas fa-eye" id="toggleEye2"></i>
                                     </span>
+                                </div>
+
+
+                                <!-- Role -->
+                                <div class="mb-3">
+                                    <label for="role" class="form-label">Role</label>
+                                    <select class="form-select" id="role" name="role">
+                                        <option value="">Select Role</option>
+                                        <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin
+                                        </option>
+                                        <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User</option>
+                                        <option value="stock_manager"
+                                            {{ old('role') == 'stock_manager' ? 'selected' : '' }}>Stock Manager</option>
+                                    </select>
+                                    @error('role')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
 
                                 <!-- Submit -->

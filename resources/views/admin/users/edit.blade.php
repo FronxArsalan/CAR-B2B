@@ -47,6 +47,13 @@
                                     @error('phone_no') <small class="text-danger">{{ $message }}</small> @enderror
                                 </div>
 
+                                <select class="form-select" id="role" name="role">
+                                    <option value="">Select Role</option>
+                                    <option value="admin" {{ (old('role', $user->role) == 'admin') ? 'selected' : '' }}>Admin</option>
+                                    <option value="user" {{ (old('role', $user->role) == 'user') ? 'selected' : '' }}>User</option>
+                                    <option value="stock_manager" {{ (old('role', $user->role) == 'stock_manager') ? 'selected' : '' }}>Stock Manager</option>
+                                </select>
+
                                 <!-- Submit -->
                                 <div class="mb-3">
                                     <button type="submit" class="btn btn-primary">Submit</button>

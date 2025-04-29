@@ -13,7 +13,7 @@ class UserController extends Controller
     // List users
     public function list()
     {
-        $users = User::where('role', 'user')->get();
+        $users = User::all();
         return view('admin.users.list', compact('users'));
     }
 
@@ -32,6 +32,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'phone_no' => 'nullable|string|numeric|',
             'password' => 'required|string|min:6|confirmed',
+            'role' => 'required|in:admin,user,stock_manager',
         ]);
 
         $plainPassword = $request->password;
@@ -42,7 +43,7 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->phone_no = $request->phone_no;
         $user->password = $plainPassword;
-        $user->role = "user";
+        $user->role = $request->role;
         $user->save();
 
          // Send the email with credentials
@@ -68,6 +69,7 @@ class UserController extends Controller
             'user_name' => 'required|string|max:255|unique:users,user_name,' . $id, // Avoids unique constraint for the same user
             'email' => 'required|email|unique:users,email,' . $id, // Avoids unique constraint for the same user
             'phone_no' => 'nullable|string|numeric|',
+            'role' => 'required|in:admin,user,stock_manager', // NEW validation for role
         ]);
 
 
@@ -75,6 +77,7 @@ class UserController extends Controller
         $user->user_name = $request->user_name;
         $user->email = $request->email;
         $user->phone_no = $request->phone_no;
+        $user->role = $request->role; // NEW line to update role
         $user->save();
 
 

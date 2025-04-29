@@ -294,6 +294,39 @@
                 @endif
 
 
+                @if (Auth::user()->role == 'stock_manager')
+                    <ul class="side-nav">
+                        <li class="side-nav-item">
+                            <a href="{{ route('tires.search') }}" class="side-nav-link">
+                                <i class="ri-dashboard-2-fill"></i>
+                                <span> Recherche Rapide </span>
+                            </a>
+                        </li>
+
+                        
+
+                        <li class="side-nav-item">
+                            <a href="{{ route('tires.index') }}" class="side-nav-link">
+                                <i class="ri-shopping-cart-fill"></i>
+                                <span> Tires </span>
+                            </a>
+                        </li>
+
+                        <li class="side-nav-item">
+                            <a href="{{ route('tires.inventory') }}" class="side-nav-link">
+                                <i class="fas fa-boxes"></i>
+                                <span> Inventory </span>
+                            </a>
+                        </li>
+                        
+                       
+
+
+                    
+                    </ul>
+                @endif
+
+
 
                 @if (Auth::user()->role == 'user')
                     <ul class="side-nav">
