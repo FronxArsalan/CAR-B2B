@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\LangugeController;
 use App\Http\Controllers\Admin\SupportTicketController;
 use App\Http\Controllers\Customer\CartController;
+use App\Http\Controllers\GoogleSheetController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -106,3 +107,12 @@ Route::middleware(['authenticate', 'is_customer'])->group(function () {
     Route::post('/place-order', [CartController::class, 'placeOrder'])->name('cart.placeOrder');
 });
 
+
+Route::prefix('google-sheet')->group(function () {
+    Route::get('/', [GoogleSheetController::class, 'index'])->name('google-sheet.index');
+    Route::get('/create', [GoogleSheetController::class, 'create'])->name('google-sheet.create');
+    Route::post('/', [GoogleSheetController::class, 'store'])->name('google-sheet.store');
+    Route::get('/edit/{row}', [GoogleSheetController::class, 'edit'])->name('google-sheet.edit');
+    Route::put('/{row}', [GoogleSheetController::class, 'update'])->name('google-sheet.update');
+    Route::delete('/{row}', [GoogleSheetController::class, 'destroy'])->name('google-sheet.destroy');
+});

@@ -262,6 +262,12 @@
                                 <span> Tires </span>
                             </a>
                         </li>
+                        <li class="side-nav-item">
+                            <a href="{{ route('google-sheet.index') }}" class="side-nav-link">
+                                <i class="ri-shopping-cart-fill"></i>
+                                <span> Google Sheet </span>
+                            </a>
+                        </li>
 
                         <li class="side-nav-item">
                             <a href="{{ route('tires.inventory') }}" class="side-nav-link">
